@@ -41,7 +41,7 @@ class Details extends React.Component {
         console.log(resId)
 
         axios({
-            url: `http://localhost:2021/getRestaurantById/${resId}`,
+            url: `https://ght-zomato-backend.herokuapp.com/getRestaurantById/${resId}`,
             method: "GET",
             headers: { "Content-Type": "application/json" },
         })
@@ -61,7 +61,7 @@ class Details extends React.Component {
         this.setState({ [state]: value });
         if (state == 'orderModalIsOpen'){
             axios({
-                url: `http://localhost:2021/getItemByRestaurant/${restaurantId}`,
+                url: `https://ght-zomato-backend.herokuapp.com/getItemByRestaurant/${restaurantId}`,
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             })

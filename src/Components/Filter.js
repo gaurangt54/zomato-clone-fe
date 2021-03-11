@@ -43,7 +43,7 @@ class Filter extends React.Component {
         const {mealtype, location , lcost, hcost, cuisine} = this.state;
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -73,7 +73,7 @@ class Filter extends React.Component {
         const { mealtype, location, sort, cuisine} = this.state;
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -111,7 +111,7 @@ class Filter extends React.Component {
         const { mealtype, location, sort, lcost, hcost} = this.state;
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -145,7 +145,7 @@ class Filter extends React.Component {
         const {mealtype, location , lcost, hcost, sort} = this.state;
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -179,7 +179,7 @@ class Filter extends React.Component {
         const location = event.target.value;
         console.log(location)
         axios({
-            url:'http://localhost:2021/filter',
+            url:'https://ght-zomato-backend.herokuapp.com/filter',
             method:'POST',
             headers:{'Content-Type':'application/json'},
             data: {
@@ -211,7 +211,7 @@ class Filter extends React.Component {
         console.log(area)
 
         axios({
-            url:'http://localhost:2021/location',
+            url:'https://ght-zomato-backend.herokuapp.com/location',
             method:'GET',
             headers:{'Content-Type':'application/json'}
         }).then(res=>{
@@ -220,7 +220,7 @@ class Filter extends React.Component {
 
         axios({
             method:'POST',
-            url:'http://localhost:2021/filter',
+            url:'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data:{
                 mealtype:mealtype,
