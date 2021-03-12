@@ -5,6 +5,10 @@ import '../Styles/filter.css';
 import querystring from 'query-string';
 import axios from 'axios';
 
+
+
+
+
 class Filter extends React.Component {
 
     constructor(){
@@ -27,11 +31,19 @@ class Filter extends React.Component {
                 "4":"Snacks",
                 "5":"Drinks",
                 "6":"Nightlife"
+            },
+            cusines:{
+                0:false,
+                1:false,
+                2:false,
+                3:false,
+                4:false
             }
         }
         
     }
 
+    
 
     handleClick = (resId) => {
         this.props.history.push(`/details/?restaurant=${resId}`);
@@ -43,7 +55,7 @@ class Filter extends React.Component {
         const {mealtype, location , lcost, hcost, cuisine} = this.state;
         axios({
             method: 'POST',
-            url: 'https://ght-zomato-backend.herokuapp.com/filter',
+            url: 'http://localhost:2021/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -73,7 +85,7 @@ class Filter extends React.Component {
         const { mealtype, location, sort, cuisine} = this.state;
         axios({
             method: 'POST',
-            url: 'https://ght-zomato-backend.herokuapp.com/filter',
+            url: 'http://localhost:2021/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -98,20 +110,25 @@ class Filter extends React.Component {
     }
 
     handleCuisine = (cuisine_id) => {
-        const cusines = {
-            0:"Street Food",
-            1:"North Indian",
-            2:"South Indian",
-            3:"Chinese",
-            4:"Fast Food"
+        
+        const { mealtype, location, sort, lcost, hcost, cusines} = this.state;
+        
+        let cu = cusines;
+
+        cu[cuisine_id] ? cu[cuisine_id]=false : cu[cuisine_id] =true;
+
+        let c = []
+
+        for(let i=0;i<5;i++){
+            if(cu[i] == true){
+                c.push({id:i})
+            }
         }
 
-        const cuisine = cusines[cuisine_id]
 
-        const { mealtype, location, sort, lcost, hcost} = this.state;
         axios({
             method: 'POST',
-            url: 'https://ght-zomato-backend.herokuapp.com/filter',
+            url: 'http://localhost:2021/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -119,7 +136,8 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
-                cuisine: cuisine
+                cuisine: c,
+                cusines: cu
                 
             }
         }).then(res => {
@@ -131,9 +149,10 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
-                cuisine: cuisine
-            })
-        }).catch(err => {
+                cuisine: c,
+                cusines: cu
+        })
+    }).catch(err => {
             console.log(err)
         })
 
@@ -141,11 +160,12 @@ class Filter extends React.Component {
 
     }
 
+
     handlePage = (pageNo) => {
         const {mealtype, location , lcost, hcost, sort} = this.state;
         axios({
             method: 'POST',
-            url: 'https://ght-zomato-backend.herokuapp.com/filter',
+            url: 'http://localhost:2021/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -175,16 +195,16 @@ class Filter extends React.Component {
     }
 
     handleLocation = (event) => {
-        const {mealtype , lcost, hcost, sort} = this.state;
+        const {mealtype, lcost, hcost, sort} = this.state;
         const location = event.target.value;
         console.log(location)
         axios({
-            url:'https://ght-zomato-backend.herokuapp.com/filter',
+            url:'http://localhost:2021/filter',
             method:'POST',
             headers:{'Content-Type':'application/json'},
             data: {
                 mealtype: mealtype,
-                location: String(location),
+                location: location,
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
@@ -194,7 +214,7 @@ class Filter extends React.Component {
             this.setState({
                 restaurants: res.data.restaurants,
                 mealtype: mealtype,
-                location: String(location),
+                location: location,
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
@@ -211,7 +231,7 @@ class Filter extends React.Component {
         console.log(area)
 
         axios({
-            url:'https://ght-zomato-backend.herokuapp.com/location',
+            url:'http://localhost:2021/location',
             method:'GET',
             headers:{'Content-Type':'application/json'}
         }).then(res=>{
@@ -220,7 +240,7 @@ class Filter extends React.Component {
 
         axios({
             method:'POST',
-            url:'https://ght-zomato-backend.herokuapp.com/filter',
+            url:'http://localhost:2021/filter',
             headers: { 'Content-Type': 'application/json' },
             data:{
                 mealtype:mealtype,
@@ -251,11 +271,11 @@ class Filter extends React.Component {
     }
 
     render() {
-        const {restaurants, pages, page, locations, mealtypes, mealtype} = this.state;
+        const {restaurants, pages, page, location, locations, mealtypes, mealtype} = this.state;
         return (
             <div>
 
-                <div id="myId" className="heading">{mealtypes[mealtype]}</div>
+                <div id="myId" className="heading">{mealtypes[mealtype]} Places</div>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-4 col-md-4 col-lg-4 filter-options">
@@ -263,8 +283,8 @@ class Filter extends React.Component {
                             <span className="glyphicon glyphicon-chevron-down toggle-span" data-toggle="collapse"
                                 data-target="#filter"></span>
                             <div id="filter" className="collapse show">
-                                <div className="Select-Location">Select Location</div>
-                                <select className="Rectangle-2236" onChange={this.handleLocation}>
+                                <div className="Select-Location ">Select Location</div>
+                                <select className="Rectangle-2236 " onChange={this.handleLocation}>
                                 <option value="0">Select</option>
                                 {
                                     locations.map((item) => {
@@ -295,7 +315,7 @@ class Filter extends React.Component {
                                 </div>
                                 <div className="Cuisine">Cost For Two</div>
                                 <div>
-                                    <input type="radio" name="cost" onChange={()=> {this.handleCost(1,500)}}/>,
+                                    <input type="radio" name="cost" onChange={()=> {this.handleCost(1,500)}}/>
                                     <span className="checkbox-items">Less than &#8377; 500</span>
                                 </div>
                                 <div>
@@ -316,7 +336,7 @@ class Filter extends React.Component {
                                 </div>
                                 <div>
                                     <input type="radio" name="cost" onChange={() => { this.handleCost(1, 5000) }}/>
-                                    <span className="checkbox-items">&#8377; All</span>
+                                    <span className="checkbox-items">All Ranges Allowed</span>
                                 </div>
                                 <div className="Cuisine">Sort</div>
                                 <div>

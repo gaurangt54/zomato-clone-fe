@@ -26,7 +26,7 @@ class QuickSearchItem extends React.Component {
                         <div className="componentHeading">
                             {item.name}
                         </div>
-                        <div className="componentSubHeading">
+                        <div className="componentSubHeading mt-n3">
                             {item.content}
                         </div>
                     </div>

@@ -10,7 +10,9 @@
     float: left;
 }
 
+
 .tab label {
+    font-family: Poppins;
     background: white;
     padding-right: 10px;
     border: 1px solid white;
@@ -48,13 +50,14 @@
 
 .button {
     position: absolute;
-    left: 80%;
+    left: 70%;
     top: 40%;
-    width: 200px;
+    width: 250px;
     height: 35px;
     opacity: 0.6;
     border-radius: 3px;
     background-color: #ffffff;
+    font-family: Poppins;
 }
 
 .heading {
@@ -113,7 +116,7 @@
 
 .btn-order {
     float: right;
-    width: 170px;
+    width: 193px;
     height: 35px;
     border-radius: 6px;
     background-color: #ce0505;

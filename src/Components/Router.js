@@ -8,7 +8,7 @@ import Details from './Details'
 const Router = () => {
         return(
             <BrowserRouter>
-            <Header />
+            <Header/>
                 <Route path="/" component={Home} exact/>
                 <Route path="/filter" component={Filter} exact />
                 <Route path="/details" component={Details} />

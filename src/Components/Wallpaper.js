@@ -1,16 +1,51 @@
 import React from 'react'
+import axios from 'axios'
+import {withRouter} from 'react-router-dom'
+
 
 class Wallpaper extends React.Component {
+
+    constructor(){
+        super();
+        this.state = {
+            restaurants : []
+        }
+    }
+
+    handleClick = (event) => {
+        const resId = event.target.value;
+        this.props.history.push(`/details/?restaurant=${resId}`);
+    }
 
     handleChange = (event) => {
         const locationId = event.target.value;
         sessionStorage.setItem('locationId',locationId)
+
+        axios({
+            method:'GET',
+            url:`http://localhost:2021/getRestaurantByLocation/${locationId}`,
+            headers: { 'Content-Type': 'application/json' },
+            
+        })
+        .then(res => {
+            this.setState({
+                restaurants: res.data.restaurants
+        })
+        console.log(res.data.restaurants[0].name)
+        }).catch(err => {
+            console.log(err)
+        })
+
     }
+
+    
+
 
     render() {
         const { locations } = this.props;
+        const {restaurants} = this.state;
         return (
-            <div>
+            <div style={{'font-family': 'Poppins'}}>
                 <img src="./Assets/homepageimg.png" width="100%" height="450" ></img>
                 <div>
                     { /*  Adding Logo  */}
@@ -33,7 +68,14 @@ class Wallpaper extends React.Component {
                         </select>
                         <div>
                             <span className="glyphicon glyphicon-search search"></span>
-                            <input className="restaurantsinput" type="text" placeholder="Please Enter Restaurant Name" />
+                            <select className="restaurantDropdown" onChange={this.handleClick}>
+                            {   restaurants.length!== 0?
+                                restaurants.map((item) => {
+                                    return <option value={item._id}>{item.name}</option>
+                                }) :
+                                <option value="">No Results Found</option>
+                            }
+                        </select>
                         </div>
                     </div>
                 </div>
@@ -42,4 +84,4 @@ class Wallpaper extends React.Component {
     }
 }
 
-export default Wallpaper
+export default withRouter(Wallpaper) 

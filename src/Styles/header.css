@@ -1,9 +1,10 @@
+
 .header-logo {
     text-align: center;
     font-size: 32px;
     color: red;
     background: white;
-    width: 55px;
+    width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-left: 2%;
@@ -21,6 +22,7 @@
     line-height: 1.56;
     letter-spacing: normal;
     text-align: left;
+    font-family: Poppins;
     color: #ffffff;
 }
 
@@ -28,6 +30,43 @@
     margin: 0 40px 0px 10px;
     padding: 0px 10px 2px 10px;
     border-radius: 3px;
+    font-family: Poppins;
     border: solid 1px #ffffff;
     color: white;
 }
+
+.btnFacebook { 
+    width: 250px;
+    height:50px;  
+    border-radius: 4px;
+    background: #3b5998;
+    color:white;
+    border:0px transparent;  
+    text-align: center;
+    margin:5px;
+    display: inline-block;
+  }
+  .btnGoogle { 
+    margin:5px;
+    width: 250px;
+    height:50px;
+    border-radius: 4px;
+    background: #db3236;
+    color:white;
+    border:0px transparent;
+    text-align: center;
+  }
+  .btnFacebook:hover {
+    background: #3b5998;
+    opacity: 0.6;
+  }
+  .btnGoogle:hover {
+    background: #db3236;
+    opacity: 0.6;
+  }
+  
+  @media only screen and (max-width : 399px) {
+    .btnFacebook,.btnGoogle{
+      width: 100%
+    }
+  }

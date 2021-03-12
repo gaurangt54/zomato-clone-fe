@@ -57,6 +57,7 @@
 }
 
 .Rectangle-2236 {
+    font-family: Poppins;
     width: 200px;
     height: 25px;
     border-radius: 5px;
@@ -89,6 +90,7 @@
     letter-spacing: normal;
     text-align: left;
     color: #8c96ab;
+    margin-left: 5px;
 }
 
 .img {
@@ -170,10 +172,22 @@
     display: inline-block;
     margin-left: 275px;
     margin-top: -3px;
+    font-family: Poppins;
 }
 
 .pagination a {
     color: gray;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: solid 1px gray;
+    border-radius: 15px;
+    margin: 2px;
+}
+
+.pagination a:hover {
+    background-color: gray;
+    color:#ffffff;
     float: left;
     padding: 8px 16px;
     text-decoration: none;
@@ -188,6 +202,7 @@
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     background-color: #ffffff;
     margin-bottom: 15px;
+    font-family: Poppins;
 }
 
 .big {

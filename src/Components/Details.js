@@ -7,6 +7,11 @@ import axios from "axios";
 import Modal from "react-modal";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import Header from './Header'
+
+const H = Header
+
+
 
 const customStyles = {
     content: {
@@ -19,6 +24,7 @@ const customStyles = {
         height: "500px",
         border: "black solid 2px",
         backgroundColor: "brown",
+        'font-family': 'Poppins'
     },
 };
 
@@ -29,9 +35,14 @@ class Details extends React.Component {
             restaurant: {},
             galleryModalIsOpen: false,
             orderModalIsOpen: false,
+            formModalIsOpen: false,
             restaurantId: undefined,
             menuItems: [],
             subTotal: 0,
+            userName: undefined,
+            contactNumber: undefined,
+            address: undefined,
+            email: undefined
         };
     }
 
@@ -39,9 +50,8 @@ class Details extends React.Component {
         const qs = queryStyring.parse(this.props.location.search);
         const resId = qs.restaurant;
         console.log(resId)
-
         axios({
-            url: `https://ght-zomato-backend.herokuapp.com/getRestaurantById/${resId}`,
+            url: `http://localhost:2021/getRestaurantById/${resId}`,
             method: "GET",
             headers: { "Content-Type": "application/json" },
         })
@@ -49,7 +59,7 @@ class Details extends React.Component {
                 console.log(res)
                 this.setState({
                      restaurant: res.data.restaurants,
-                     restaurantId: resId
+                     restaurantId: resId,
                      });
 
             })
@@ -61,7 +71,7 @@ class Details extends React.Component {
         this.setState({ [state]: value });
         if (state == 'orderModalIsOpen'){
             axios({
-                url: `https://ght-zomato-backend.herokuapp.com/getItemByRestaurant/${restaurantId}`,
+                url: `http://localhost:2021/getItemByRestaurant/${restaurantId}`,
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             })
@@ -76,6 +86,10 @@ class Details extends React.Component {
         else if (state == 'formModalIsOpen') {
             this.setState({ orderModalIsOpen: false });
         }
+    }
+
+    handleInputChange = (event, state) => {
+        this.setState({ [state]: event.target.value })
     }
 
     addItems = (index, operationType) => {
@@ -96,8 +110,72 @@ class Details extends React.Component {
         this.setState({ menuItems: items, subTotal: total });
     }
 
+    isDate(val) {
+        // Cross realm comptatible
+        return Object.prototype.toString.call(val) === '[object Date]'
+    }
+
+    isObj = (val) => {
+        return typeof val === 'object'
+    }
+
+    stringifyValue = (val) => {
+        if (this.isObj(val) && !this.isDate(val)) {
+            return JSON.stringify(val)
+        } else {
+            return val
+        }
+    }
+
+    buildForm = ({ action, params }) => {
+        const form = document.createElement('form')
+        form.setAttribute('method', 'post')
+        form.setAttribute('action', action)
+
+        Object.keys(params).forEach(key => {
+            const input = document.createElement('input')
+            input.setAttribute('type', 'hidden')
+            input.setAttribute('name', key)
+            input.setAttribute('value', this.stringifyValue(params[key]))
+            form.appendChild(input)
+        })
+
+        return form
+    }
+
+    post = (details) => {
+        const form = this.buildForm(details)
+        document.body.appendChild(form)
+        form.submit()
+        form.remove()
+    }
+
+    getData = (data) => {
+        return fetch(`http://localhost:2021/payment`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json()).catch(err => console.log(err))
+    }
+
+    makePayment = (e) => {
+        const { subTotal, email } = this.state;
+        this.getData({ amount: subTotal, email: email }).then(response => {
+            var information = {
+                action: "https://securegw-stage.paytm.in/order/process",
+                params: response
+            }
+            this.post(information);
+        })
+        e.preventDefault();
+    }
+
     render() {
-        const { restaurant, galleryModalIsOpen, orderModalIsOpen, menuItems, subTotal } = this.state;
+        const { restaurant, galleryModalIsOpen, orderModalIsOpen, menuItems, subTotal, formModalIsOpen,
+        userName, contactNumber, email, address  } = this.state;
         return (
             <div>
                 <div>
@@ -208,14 +286,43 @@ class Details extends React.Component {
                                             </span>
                                         </div>
                                         <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3"> <img className="card-img-center title-img" src={`../${item.image}`} style={{ height: '75px', width: '75px', 'border-radius': '20px' }} />
-                                            {item.qty == 0 ? <div><button className="add-button" onClick={() => this.addItems(index, 'add')}>Add</button></div> :
-                                                <div className="add-number"><button onClick={() => this.addItems(index, 'subtract')}>-</button><span style={{ backgroundColor: 'white' }}>{item.qty}</span><button onClick={() => this.addItems(index, 'add')}>+</button></div>}
+                                            {item.qty == 0 ? <div><button className="add-button btn btn-primary" onClick={() => this.addItems(index, 'add')}>Add</button></div> :
+                                                <div className="add-number btn-grp"><button className="btn btn-primary" onClick={() => this.addItems(index, 'subtract')}>-</button><span className="btn btn-primary" >{item.qty}</span><button className="btn btn-primary" onClick={() => this.addItems(index, 'add')}>+</button></div>}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         })}
                         
+                    </div>
+                </Modal>
+                <Modal
+                    isOpen={formModalIsOpen}
+                    style={customStyles}
+                >
+                    <div>
+                        <div className="glyphicon glyphicon-remove lose" style={{ float: 'right' }} onClick={() => this.handleModalClose('formModalIsOpen')}></div>
+                        <form onSubmit={this.makePayment}>
+                            <table>
+                                <tr>
+                                    <td>Name</td>
+                                    <td><input type="text" value={userName} onChange={(event) => this.handleInputChange(event, 'userName')} /></td>
+                                </tr>
+                                <tr>
+                                    <td>Conatct Number</td>
+                                    <td><input type="text" value={contactNumber} onChange={(event) => this.handleInputChange(event, 'contactNumber')} /></td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td><input type="text" value={address} onChange={(event) => this.handleInputChange(event, 'address')} /></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td><input type="text" value={email} onChange={(event) => this.handleInputChange(event, 'email')} /></td>
+                                </tr>
+                            </table>
+                            <input type="submit" className="btn btn-danger" value="Proceed" />
+                        </form>
                     </div>
                 </Modal>
             </div>
