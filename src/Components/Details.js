@@ -51,7 +51,7 @@ class Details extends React.Component {
         const resId = qs.restaurant;
         console.log(resId)
         axios({
-            url: `https://ght-zomato-backend.herokuapp.com/getRestaurantById/${resId}`,
+            url: `http://localhost:2021/getRestaurantById/${resId}`,
             method: "GET",
             headers: { "Content-Type": "application/json" },
         })
@@ -71,7 +71,7 @@ class Details extends React.Component {
         this.setState({ [state]: value });
         if (state == 'orderModalIsOpen'){
             axios({
-                url: `https://ght-zomato-backend.herokuapp.com/getItemByRestaurant/${restaurantId}`,
+                url: `http://localhost:2021/getItemByRestaurant/${restaurantId}`,
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             })
@@ -151,7 +151,7 @@ class Details extends React.Component {
     }
 
     getData = (data) => {
-        return fetch(`https://ght-zomato-backend.herokuapp.com/payment`, {
+        return fetch(`http://localhost:2021/payment`, {
             method: "POST",
             headers: {
                 Accept: "application/json",

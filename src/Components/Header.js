@@ -53,7 +53,7 @@ class Header extends React.Component {
     login = () => {
         const { email, password } = this.state;
         axios({
-            url: `https://ght-zomato-backend.herokuapp.com/login`,
+            url: `http://localhost:2021/login`,
             method: "POST",
             headers: { "Content-Type": "application/json" },
             data:{
@@ -88,7 +88,7 @@ class Header extends React.Component {
     register = () => {
         const { firstname,lastname ,email, password } = this.state;
         axios({
-            url: `https://ght-zomato-backend.herokuapp.com/signup`,
+            url: `http://localhost:2021/signup`,
             method: "POST",
             headers: { "Content-Type": "application/json" },
             data:{
