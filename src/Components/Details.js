@@ -51,7 +51,7 @@ class Details extends React.Component {
         const resId = qs.restaurant;
         console.log(resId)
         axios({
-            url: `http://localhost:2021/getRestaurantById/${resId}`,
+            url: `https://ght-zomato-backend.herokuapp.com/getRestaurantById/${resId}`,
             method: "GET",
             headers: { "Content-Type": "application/json" },
         })
@@ -71,7 +71,7 @@ class Details extends React.Component {
         this.setState({ [state]: value });
         if (state == 'orderModalIsOpen'){
             axios({
-                url: `http://localhost:2021/getItemByRestaurant/${restaurantId}`,
+                url: `https://ght-zomato-backend.herokuapp.com/getItemByRestaurant/${restaurantId}`,
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             })
@@ -86,6 +86,10 @@ class Details extends React.Component {
         else if (state == 'formModalIsOpen') {
             this.setState({ orderModalIsOpen: false });
         }
+    }
+
+    handleModalClose = (state) => {
+        this.setState({[state]:false})
     }
 
     handleInputChange = (event, state) => {
@@ -151,7 +155,7 @@ class Details extends React.Component {
     }
 
     getData = (data) => {
-        return fetch(`http://localhost:2021/payment`, {
+        return fetch(`https://ght-zomato-backend.herokuapp.com/payment`, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -172,6 +176,8 @@ class Details extends React.Component {
         })
         e.preventDefault();
     }
+
+    
 
     render() {
         const { restaurant, galleryModalIsOpen, orderModalIsOpen, menuItems, subTotal, formModalIsOpen,
@@ -270,7 +276,7 @@ class Details extends React.Component {
                 </Modal>
                 <Modal isOpen={orderModalIsOpen} style={customStyles}>
                 <div >
-                        <div className="glyphicon glyphicon-remove lose" style={{ float: 'right' }} onClick={() => this.handleModalClose('itemModalIsOpen')}></div>
+                        <div className="glyphicon glyphicon-remove lose" style={{ float: 'right' }} onClick={() => this.handleClick('orderModalIsOpen',false)}>x</div>
                         <h3 className="restaurant-name">{restaurant.name}</h3>
                         <h3>SubTotal : {subTotal}</h3>
                         <button className="btn btn-danger pay" onClick={() => this.handleClick('formModalIsOpen', true)}> Pay Now</button>
@@ -301,7 +307,8 @@ class Details extends React.Component {
                     style={customStyles}
                 >
                     <div>
-                        <div className="glyphicon glyphicon-remove lose" style={{ float: 'right' }} onClick={() => this.handleModalClose('formModalIsOpen')}></div>
+                        <div className="glyphicon glyphicon-remove lose" style={{ float: 'right' }} onClick={() => this.handleClick('formModalIsOpen',false)}>x</div>
+                        <br/>
                         <form onSubmit={this.makePayment}>
                             <table>
                                 <tr>

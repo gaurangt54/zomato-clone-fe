@@ -21,7 +21,7 @@ class Home extends React.Component{
         sessionStorage.setItem('locationId',undefined)
 
         axios({
-            url:'http://localhost:2021/location',
+            url:'https://ght-zomato-backend.herokuapp.com/location',
             method:'GET',
             headers:{'Content-Type':'application/json'}
         }).then(res=>{
@@ -29,7 +29,7 @@ class Home extends React.Component{
         }).catch(err=> {console.log(err)})
 
         axios({
-            url: 'http://localhost:2021/mealtypes',
+            url: 'https://ght-zomato-backend.herokuapp.com/mealtypes',
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         }).then(res => {

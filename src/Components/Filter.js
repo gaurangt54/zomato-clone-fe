@@ -45,14 +45,15 @@ class Filter extends React.Component {
         const {mealtype, location , lcost, hcost, cuisine} = this.state;
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
                 location: location,
                 sort: sort,
                 lcost: lcost,
-                hcost: hcost
+                hcost: hcost,
+                cuisine: cuisine
             }
         }).then(res => {
             console.log(res)
@@ -63,6 +64,7 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
+                cuisine: cuisine
 
             })
         }).catch(err => {
@@ -75,14 +77,15 @@ class Filter extends React.Component {
         const { mealtype, location, sort, cuisine} = this.state;
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
                 location: location,
                 sort: sort,
                 lcost: lcost,
-                hcost: hcost
+                hcost: hcost,
+                cuisine: cuisine
             }
         }).then(res => {
             this.setState({
@@ -92,6 +95,7 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
+                cuisine: cuisine
             })
         }).catch(err => {
             console.log(err)
@@ -117,7 +121,7 @@ class Filter extends React.Component {
         
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -125,7 +129,7 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
-                cuisine: cuisine
+                cuisine: cuisine.length!=0?cuisine:undefined
                 
             }
         }).then(res => {
@@ -137,7 +141,7 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
-                cuisine: cuisine
+                cuisine: cuisine.length!=0?cuisine:undefined
         })
     }).catch(err => {
             console.log(err)
@@ -149,10 +153,10 @@ class Filter extends React.Component {
 
 
     handlePage = (pageNo) => {
-        const {mealtype, location , lcost, hcost, sort} = this.state;
+        const {mealtype, location , lcost, hcost, sort,cuisine} = this.state;
         axios({
             method: 'POST',
-            url: 'http://localhost:2021/filter',
+            url: 'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data: {
                 mealtype: mealtype,
@@ -160,7 +164,8 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
-                page: pageNo
+                page: pageNo,
+                cuisine: cuisine
             }
         }).then(res => {
             console.log(res)
@@ -171,7 +176,8 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
-                page: pageNo
+                page: pageNo,
+                cuisine: cuisine
 
             })
         }).catch(err => {
@@ -182,11 +188,11 @@ class Filter extends React.Component {
     }
 
     handleLocation = (event) => {
-        const {mealtype, lcost, hcost, sort} = this.state;
+        const {mealtype, lcost, hcost, sort,cuisine} = this.state;
         const location = event.target.value;
         console.log(location)
         axios({
-            url:'http://localhost:2021/filter',
+            url:'https://ght-zomato-backend.herokuapp.com/filter',
             method:'POST',
             headers:{'Content-Type':'application/json'},
             data: {
@@ -195,6 +201,7 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
+                cuisine: cuisine?cuisine.length!=0?cuisine:undefined:undefined
             }
         }).then(res => {
             console.log(res)
@@ -205,7 +212,7 @@ class Filter extends React.Component {
                 sort: sort,
                 lcost: lcost,
                 hcost: hcost,
-
+                cuisine: cuisine?cuisine.length!=0?cuisine:undefined:undefined
             })
         }).catch(err => {
             console.log(err)
@@ -218,7 +225,7 @@ class Filter extends React.Component {
         console.log(area)
 
         axios({
-            url:'http://localhost:2021/location',
+            url:'https://ght-zomato-backend.herokuapp.com/location',
             method:'GET',
             headers:{'Content-Type':'application/json'}
         }).then(res=>{
@@ -227,7 +234,7 @@ class Filter extends React.Component {
 
         axios({
             method:'POST',
-            url:'http://localhost:2021/filter',
+            url:'https://ght-zomato-backend.herokuapp.com/filter',
             headers: { 'Content-Type': 'application/json' },
             data:{
                 mealtype:mealtype,
